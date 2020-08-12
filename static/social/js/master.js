@@ -1,15 +1,16 @@
 // SOURCE: http://codepen.io/Thibka/pen/mWGxNj
 var canvas = document.getElementById('canvas'),
   context = canvas.getContext('2d'),
-  canvasWidth = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth),
-  canvasHeight = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight),
+  canvasWidth = (window.outerWidth || document.documentElement.clientWidth || document.body.clientWidth),
+  canvasHeight = (window.outerHeight || document.documentElement.clientHeight || document.body.clientHeight || canvas.offsetHeight),
+  // canvasHeight = (window.outerHeight || canvas.offsetHeight),
   requestAnimationFrame = window.requestAnimationFrame ||
   window.mozRequestAnimationFrame ||
   window.webkitRequestAnimationFrame ||
   window.msRequestAnimationFrame;
 var persons = [],
-  numberOfFirefly = 30,
-  birthToGive = 25;
+  numberOfFirefly = 40,
+  birthToGive = 35;
 
 var colors = [];
 /* Galactic Tea - http://www.colourlovers.com/palette/1586746/Galactic_Tea*/
@@ -45,7 +46,7 @@ function Firefly(id) {
   this.height = this.width;
   this.x = getRandomInt(0, (canvas.width - this.width));
   this.y = getRandomInt(0, (canvas.height - this.height));
-  this.speed = (this.width <= 10) ? 2 : 1;
+  this.speed = (this.width <= 8) ? 2 : 1;
   this.alpha = 1;
   this.alphaReduction = getRandomInt(1, 3) / 1000;
   this.color = colors[colorTheme][getRandomInt(1, colors[colorTheme].length - 1)];
@@ -54,8 +55,8 @@ function Firefly(id) {
   this.turnerAmp = getRandomInt(1, 2);
   this.isHit = false;
   this.stepCounter = 0;
-  this.changeDirectionFrequency = getRandomInt(1, 200);
-  this.shape = 2; //getRandomInt(2,3);
+  this.changeDirectionFrequency = getRandomInt(1, 300);
+  this.shape = 3; //getRandomInt(2,3);
   this.shadowBlur = getRandomInt(5, 25);
 }
 
