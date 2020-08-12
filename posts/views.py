@@ -4,6 +4,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.http import Http404
 from braces.views import SelectRelatedMixin
+from django.contrib import messages
 # Create your views here.
 from . import models
 from . import forms
@@ -22,7 +23,7 @@ class UserPosts(generic.ListView):
 
     def get_queryset(self):
         try:
-            self.post.user = User.objects.prefetch_related('posts').get(username__iexact=self.kwargs.get('username'))
+            self.post_user = User.objects.prefetch_related('posts').get(username__iexact=self.kwargs.get('username'))
 
         except User.DoesNotExist:
             raise Http404
@@ -33,7 +34,7 @@ class UserPosts(generic.ListView):
 
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
-        context['post_user'] = self.post.user
+        context['post_user'] = self.post_user
         return context
 
 
@@ -43,7 +44,7 @@ class PostDetail(SelectRelatedMixin,generic.DetailView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.filter(user__username__isexact=self.kwargs.get('username'))
+        return queryset.filter(user__username__iexact=self.kwargs.get('username'))
 
 
 class CreatePost(LoginRequiredMixin,SelectRelatedMixin,generic.CreateView):
